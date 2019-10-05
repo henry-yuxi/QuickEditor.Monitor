@@ -1,4 +1,6 @@
-﻿namespace QuickEditor.Monitor
+﻿#if UNITY_EDITOR
+
+namespace QuickEditor.Monitor
 {
     using UnityEditor;
     using UnityEngine;
@@ -83,3 +85,5 @@
         //}
     }
 }
+
+#endif

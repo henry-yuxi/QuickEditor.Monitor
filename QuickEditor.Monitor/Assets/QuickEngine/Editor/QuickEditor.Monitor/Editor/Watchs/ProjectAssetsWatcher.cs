@@ -1,48 +1,53 @@
-﻿using QuickEditor.Monitor;
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
-[InitializeOnLoad]
-public static class ProjectAssetsWatcher
+namespace QuickEditor.Monitor
 {
-    private const string LOG_TAG = "<color=black><b>[ProjectAssetsWatcher]</b></color>";
-    private const string LOG_FORMAT = "{0} --> {1}";
+    using UnityEditor;
+    using UnityEngine;
 
-    static ProjectAssetsWatcher()
+    [InitializeOnLoad]
+    public static class ProjectAssetsWatcher
     {
-        QuickUnityEditorEventWatcher editorEventWatcher = QuickUnityEditorEventWatcher.Observe();
-        editorEventWatcher.BuildTarget.onActiveBuildTargetChanged.AddListener(target =>
-        {
-            UnityEngine.Debug.Log("当前平台为: " + target);
-        });
+        private const string LOG_TAG = "<color=black><b>[ProjectAssetsWatcher]</b></color>";
+        private const string LOG_FORMAT = "{0} --> {1}";
 
-        // Observe the entire assets folder for changes
-        var watcher = QuickAssetWatcher.Observe();
-
-        watcher.onAssetCreated.AddListener(asset =>
+        static ProjectAssetsWatcher()
         {
-            Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=cyan>Created</color> asset '" + asset.Name + "' of type " + asset.Type));
-        });
+            QuickUnityEditorEventWatcher editorEventWatcher = QuickUnityEditorEventWatcher.Observe();
+            editorEventWatcher.BuildTarget.onActiveBuildTargetChanged.AddListener(target =>
+            {
+                UnityEngine.Debug.Log("当前平台为: " + target);
+            });
 
-        watcher.onAssetDeleted.AddListener(asset =>
-        {
-            Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=red>Deleted</color> asset '" + asset.Name + "' of type " + asset.Type));
-        });
+            // Observe the entire assets folder for changes
+            var watcher = QuickAssetWatcher.Observe();
 
-        watcher.onAssetModified.AddListener(asset =>
-        {
-            Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=orange>Modified</color> asset '" + asset.Name + "' of type " + asset.Type));
-        });
+            watcher.onAssetCreated.AddListener(asset =>
+            {
+                Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=cyan>Created</color> asset '" + asset.Name + "' of type " + asset.Type));
+            });
 
-        watcher.onAssetMoved.AddListener((before, after) =>
-        {
-            Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=blue>Moved</color> asset '" + before.Name + "' from '" + before.DirectoryName + "' to '" + after.DirectoryName + "'"));
-        });
+            watcher.onAssetDeleted.AddListener(asset =>
+            {
+                Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=red>Deleted</color> asset '" + asset.Name + "' of type " + asset.Type));
+            });
 
-        watcher.onAssetRenamed.AddListener((before, after) =>
-        {
-            Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=magenta>Renamed</color> asset from '" + before.Name + "' to '" + after.Name + "'"));
-        });
+            watcher.onAssetModified.AddListener(asset =>
+            {
+                Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=orange>Modified</color> asset '" + asset.Name + "' of type " + asset.Type));
+            });
+
+            watcher.onAssetMoved.AddListener((before, after) =>
+            {
+                Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=blue>Moved</color> asset '" + before.Name + "' from '" + before.DirectoryName + "' to '" + after.DirectoryName + "'"));
+            });
+
+            watcher.onAssetRenamed.AddListener((before, after) =>
+            {
+                Debug.Log(string.Format(LOG_FORMAT, LOG_TAG, " <color=magenta>Renamed</color> asset from '" + before.Name + "' to '" + after.Name + "'"));
+            });
+        }
     }
-
 }
+
+#endif

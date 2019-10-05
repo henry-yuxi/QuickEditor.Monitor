@@ -1,4 +1,6 @@
-﻿using UnityEngine.SceneManagement;
+﻿#if UNITY_EDITOR
+
+using UnityEngine.SceneManagement;
 
 namespace QuickEditor.Monitor
 {
@@ -461,3 +463,5 @@ namespace QuickEditor.Monitor
         #endregion Unity Build Pipeline
     }
 }
+
+#endif

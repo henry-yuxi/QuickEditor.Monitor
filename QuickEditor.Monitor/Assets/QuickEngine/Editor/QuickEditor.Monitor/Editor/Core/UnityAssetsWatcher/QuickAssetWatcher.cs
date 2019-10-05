@@ -1,4 +1,6 @@
-﻿namespace QuickEditor.Monitor
+﻿#if UNITY_EDITOR
+
+namespace QuickEditor.Monitor
 {
     using System.Collections.Generic;
     using System.IO;
@@ -145,3 +147,5 @@
         #endregion API
     }
 }
+
+#endif
