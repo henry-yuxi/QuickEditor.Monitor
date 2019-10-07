@@ -1,13 +1,11 @@
 ﻿#if UNITY_EDITOR
 
-using UnityEngine.SceneManagement;
-
 namespace QuickEditor.Monitor
 {
-    using System;
     using System.Reflection;
     using UnityEditor;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
 
     [InitializeOnLoad]
     internal sealed partial class QuickUnityEditorEventProcessor
@@ -116,7 +114,7 @@ namespace QuickEditor.Monitor
 
             private static bool onQuit()
             {
-                throw new NotImplementedException();
+                return false;
             }
 
             private static void onContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
@@ -441,7 +439,7 @@ namespace QuickEditor.Monitor
                 }
             }
 
-            public static void PostprocessBuild(BuildTarget target, string path)
+            public static void PreprocessBuild(BuildTarget target, string path)
             {
                 foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
                 {
@@ -450,7 +448,7 @@ namespace QuickEditor.Monitor
                 }
             }
 
-            public static void PreprocessBuild(BuildTarget target, string path)
+            public static void PostprocessBuild(BuildTarget target, string path)
             {
                 foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
                 {

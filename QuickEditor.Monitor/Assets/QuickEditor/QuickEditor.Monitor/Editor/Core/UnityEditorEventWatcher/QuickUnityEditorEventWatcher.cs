@@ -12,7 +12,7 @@ namespace QuickEditor.Monitor
     {
         #region 事件相关定义
 
-        internal sealed partial class BuildPipelineAdapter
+        public partial class BuildPipelineAdapter
         {
             public class ProcessSceneEvent : UnityEvent<Scene> { }
 
@@ -43,7 +43,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class BuildTargetAdapter
+        public partial class BuildTargetAdapter
         {
             public class ActiveBuildTargetChangedEvent : UnityEvent<BuildTarget> { }
 
@@ -56,7 +56,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class EditorApplicationAdapter
+        public partial class EditorApplicationAdapter
         {
             public class GlobalEvent : UnityEvent<Event> { }
 
@@ -116,7 +116,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class SceneViewAdapter
+        public partial class SceneViewAdapter
         {
             public class SceneGUIDelegateEvent : UnityEvent<SceneView> { }
 
@@ -129,7 +129,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class PrefabUtilityAdapter
+        public partial class PrefabUtilityAdapter
         {
             public class PrefabInstanceUpdatedEvent : UnityEvent<GameObject> { }
 
@@ -142,7 +142,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class ProjectViewAdapter
+        public partial class ProjectViewAdapter
         {
             public class ProjectChangedEvent : UnityEvent { }
 
@@ -164,7 +164,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class HierarchyViewAdapter
+        public partial class HierarchyViewAdapter
         {
             public class HierarchyChangedEvent : UnityEvent { }
 
@@ -186,13 +186,13 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal BuildPipelineAdapter BuildPipeline = new BuildPipelineAdapter();
-        internal BuildTargetAdapter BuildTarget = new BuildTargetAdapter();
-        internal EditorApplicationAdapter EditorApplication = new EditorApplicationAdapter();
-        internal SceneViewAdapter SceneView = new SceneViewAdapter();
-        internal PrefabUtilityAdapter PrefabUtility = new PrefabUtilityAdapter();
-        internal ProjectViewAdapter ProjectView = new ProjectViewAdapter();
-        internal HierarchyViewAdapter HierarchyView = new HierarchyViewAdapter();
+        public readonly BuildPipelineAdapter BuildPipeline = new BuildPipelineAdapter();
+        public readonly BuildTargetAdapter BuildTarget = new BuildTargetAdapter();
+        public readonly EditorApplicationAdapter EditorApplication = new EditorApplicationAdapter();
+        public readonly SceneViewAdapter SceneView = new SceneViewAdapter();
+        public readonly PrefabUtilityAdapter PrefabUtility = new PrefabUtilityAdapter();
+        public readonly ProjectViewAdapter ProjectView = new ProjectViewAdapter();
+        public readonly HierarchyViewAdapter HierarchyView = new HierarchyViewAdapter();
 
         //public enum PlayModeState
         //{
