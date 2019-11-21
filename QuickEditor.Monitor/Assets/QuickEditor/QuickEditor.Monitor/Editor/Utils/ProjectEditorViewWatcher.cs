@@ -6,11 +6,15 @@ namespace QuickEditor.Monitor
     using UnityEngine;
 
     [InitializeOnLoad]
-    internal sealed partial class ProjectEventWatcher
+    internal sealed partial class ProjectEditorViewWatcher
     {
-        static ProjectEventWatcher()
+        private static string TAG = typeof(ProjectEditorViewWatcher).Name;
+        private const string DefaultPrefix = "> ";
+        private const string FORMAT = DefaultPrefix + "<color=black><b>[{0}]</b></color> --> {1}";
+
+        static ProjectEditorViewWatcher()
         {
-            QuickUnityEditorEventWatcher watcher = QuickUnityEditorEventWatcher.Observe();
+            QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
             watcher.SceneView.onSceneGUIDelegate.AddListener(onSceneViewGUI);
             watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
         }
@@ -29,7 +33,7 @@ namespace QuickEditor.Monitor
                         UnityEngine.Object handleObj = DragAndDrop.objectReferences[i];
                         if (handleObj != null)
                         {
-                            Debug.LogError(handleObj.GetType());
+                            Debug.LogError(string.Format(FORMAT, TAG, handleObj.GetType()));
                         }
                     }
                 }

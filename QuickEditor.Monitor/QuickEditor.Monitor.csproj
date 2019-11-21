@@ -53,16 +53,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityAssetsWatcher\Internal\QuickAssetModificationProcessor.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityAssetsWatcher\Internal\QuickAssetPostprocessor.cs" />
      <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityAssetsWatcher\QuickAssetFileInfo.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityAssetsWatcher\QuickAssetModificationProcessor.cs" />
      <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityAssetsWatcher\QuickAssetWatcher.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityAssetsWatcher\QuickAssetWatcherPostprocessor.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityEditorEventWatcher\QuickUnityEditorEventProcessor.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityEditorEventWatcher\QuickUnityEditorEventWatcher.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Watchs\ProjectAssetsWatcher.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Watchs\ProjectEventWatcher.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Watchs\ProjectWindowWatcher.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Watchs\UnityScripsCompileWatcher.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityCompileTimeTracker\Internal\TrackingUtils.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityCompileTimeTracker\Internal\UnityEditorConsoleUtils.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityCompileTimeTracker\Internal\UnityScripsCompileTimeKeyframe.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityCompileTimeTracker\Internal\UnityScripsCompileTimeTrackerData.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityCompileTimeTracker\UnityScripsCompileTimeTracker.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityCompileTimeTracker\UnityScripsCompileWatcher.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityEditorEventWatcher\Internal\QuickUnityEditorEventsProcessor.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Core\UnityEditorEventWatcher\QuickUnityEditorEventsWatcher.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Utils\ProjectAssetsWatcher.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Utils\ProjectBuildTargetWatcher.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Utils\ProjectEditorViewWatcher.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Utils\ProjectWindowWatcher.cs" />
  <Reference Include="UnityEngine.AIModule">
  <HintPath>D:/Program Files/Unity/Unity2018.2.21f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
  </Reference>

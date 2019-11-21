@@ -7,7 +7,7 @@ namespace QuickEditor.Monitor
     using System.Linq;
     using UnityEditor;
 
-    public sealed class QuickAssetWatcherPostprocessor : AssetPostprocessor
+    public sealed class QuickAssetPostprocessor : AssetPostprocessor
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromPaths)
         {
