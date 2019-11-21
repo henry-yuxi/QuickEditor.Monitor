@@ -8,16 +8,16 @@ namespace QuickEditor.Monitor
     using UnityEngine.SceneManagement;
 
     [InitializeOnLoad]
-    internal sealed partial class QuickUnityEditorEventProcessor
+    internal sealed partial class QuickUnityEditorEventsProcessor
     {
-        static QuickUnityEditorEventProcessor()
+        static QuickUnityEditorEventsProcessor()
         {
-            EditorApplicationEventProcessor.Process();
-            EditorPlayModeEventProcessor.Process();
-            SceneViewEventProcessor.Process();
-            PrefabUtilityEventProcessor.Process();
-            ProjectViewEventProcessor.Process();
-            HierarchyViewEventProcessor.Process();
+            EditorApplicationEventsProcessor.Process();
+            EditorPlayModeEventsProcessor.Process();
+            SceneViewEventsProcessor.Process();
+            PrefabUtilityEventsProcessor.Process();
+            ProjectViewEventsProcessor.Process();
+            HierarchyViewEventsProcessor.Process();
 
             //EditorUserBuildSettings.activeBuildTargetChanged -= OnActiveBuildTargetChanged;
             //EditorUserBuildSettings.activeBuildTargetChanged += OnActiveBuildTargetChanged;
@@ -30,7 +30,101 @@ namespace QuickEditor.Monitor
             //}
         }
 
-        internal sealed partial class EditorPlayModeEventProcessor
+        internal interface IEventProcessor
+        {
+        }
+
+        internal sealed partial class EditorApplicationEventsProcessor
+        {
+            public static void Process()
+            {
+                EditorApplication.contextualPropertyMenu -= onContextualPropertyMenu;
+                EditorApplication.contextualPropertyMenu += onContextualPropertyMenu;
+
+                EditorApplication.modifierKeysChanged -= onModifierKeysChanged;
+                EditorApplication.modifierKeysChanged += onModifierKeysChanged;
+
+                EditorApplication.delayCall -= onDelayCall;
+                EditorApplication.delayCall += onDelayCall;
+
+                EditorApplication.update -= onUpdate;
+                EditorApplication.update += onUpdate;
+
+                EditorApplication.searchChanged -= onSearchChanged;
+                EditorApplication.searchChanged += onSearchChanged;
+
+                // globalEventHandler
+                EditorApplication.CallbackFunction function = () => onGlobalEventHandler(Event.current);
+                FieldInfo info = typeof(EditorApplication).GetField("globalEventHandler", BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic);
+                EditorApplication.CallbackFunction functions = (EditorApplication.CallbackFunction)info.GetValue(null);
+                functions += function;
+                info.SetValue(null, (object)functions);
+
+                //EditorApplication.wantsToQuit -= onQuit;
+                //EditorApplication.wantsToQuit += onQuit;
+            }
+
+            private static void onGlobalEventHandler(Event current)
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeGlobalEvent(current, w.EditorApplication.onGlobal);
+                }
+            }
+
+            private static bool onQuit()
+            {
+                return false;
+            }
+
+            private static void onContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeContextualPropertyMenu(menu, property, w.EditorApplication.onContextualPropertyMenu);
+                }
+            }
+
+            private static void onModifierKeysChanged()
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeModifierKeysChanged(w.EditorApplication.onModifierKeysChanged);
+                }
+            }
+
+            private static void onDelayCall()
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeDelayCall(w.EditorApplication.onDelayCall);
+                }
+            }
+
+            private static void onUpdate()
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeUpdate(w.EditorApplication.onUpdate);
+                }
+            }
+
+            private static void onSearchChanged()
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeSearchChanged(w.EditorApplication.onSearchChanged);
+                }
+            }
+        }
+
+        internal sealed partial class EditorPlayModeEventsProcessor
         {
             public static void Process()
             {
@@ -73,97 +167,7 @@ namespace QuickEditor.Monitor
             //}
         }
 
-        internal sealed partial class EditorApplicationEventProcessor
-        {
-            public static void Process()
-            {
-                EditorApplication.contextualPropertyMenu -= onContextualPropertyMenu;
-                EditorApplication.contextualPropertyMenu += onContextualPropertyMenu;
-
-                EditorApplication.modifierKeysChanged -= onModifierKeysChanged;
-                EditorApplication.modifierKeysChanged += onModifierKeysChanged;
-
-                EditorApplication.delayCall -= onDelayCall;
-                EditorApplication.delayCall += onDelayCall;
-
-                EditorApplication.update -= onUpdate;
-                EditorApplication.update += onUpdate;
-
-                EditorApplication.searchChanged -= onSearchChanged;
-                EditorApplication.searchChanged += onSearchChanged;
-
-                // globalEventHandler
-                EditorApplication.CallbackFunction function = () => onGlobalEventHandler(Event.current);
-                FieldInfo info = typeof(EditorApplication).GetField("globalEventHandler", BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic);
-                EditorApplication.CallbackFunction functions = (EditorApplication.CallbackFunction)info.GetValue(null);
-                functions += function;
-                info.SetValue(null, (object)functions);
-
-                //EditorApplication.wantsToQuit -= onQuit;
-                //EditorApplication.wantsToQuit += onQuit;
-            }
-
-            private static void onGlobalEventHandler(Event current)
-            {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeGlobalEvent(current, w.EditorApplication.onGlobal);
-                }
-            }
-
-            private static bool onQuit()
-            {
-                return false;
-            }
-
-            private static void onContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
-            {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeContextualPropertyMenu(menu, property, w.EditorApplication.onContextualPropertyMenu);
-                }
-            }
-
-            private static void onModifierKeysChanged()
-            {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeModifierKeysChanged(w.EditorApplication.onModifierKeysChanged);
-                }
-            }
-
-            private static void onDelayCall()
-            {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeDelayCall(w.EditorApplication.onDelayCall);
-                }
-            }
-
-            private static void onUpdate()
-            {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeUpdate(w.EditorApplication.onUpdate);
-                }
-            }
-
-            private static void onSearchChanged()
-            {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeSearchChanged(w.EditorApplication.onSearchChanged);
-                }
-            }
-        }
-
-        internal sealed partial class HierarchyViewEventProcessor
+        internal sealed partial class HierarchyViewEventsProcessor
         {
             public static void Process()
             {
@@ -177,7 +181,7 @@ namespace QuickEditor.Monitor
 
             private static void onHierarchyChanged()
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.HierarchyView == null) { continue; }
                     w.HierarchyView.InvokeHierarchyChanged(w.HierarchyView.onHierarchyChanged);
@@ -186,7 +190,7 @@ namespace QuickEditor.Monitor
 
             private static void onHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.HierarchyView == null) { continue; }
                     w.HierarchyView.InvokeHierarchyWindowItemOnGUI(instanceID, selectionRect, w.HierarchyView.onHierarchyWindowItemOnGUI);
@@ -194,7 +198,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class PrefabUtilityEventProcessor
+        internal sealed partial class PrefabUtilityEventsProcessor
         {
             public static void Process()
             {
@@ -204,7 +208,7 @@ namespace QuickEditor.Monitor
 
             private static void onPrefabInstanceUpdated(GameObject instance)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.PrefabUtility == null) { continue; }
                     w.PrefabUtility.InvokePrefabInstanceUpdated(instance, w.PrefabUtility.onPrefabInstanceUpdated);
@@ -212,7 +216,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class ProjectViewEventProcessor
+        internal sealed partial class ProjectViewEventsProcessor
         {
             public static void Process()
             {
@@ -227,7 +231,7 @@ namespace QuickEditor.Monitor
 
             private static void onProjectChanged()
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.ProjectView == null) { continue; }
                     w.ProjectView.InvokeProjectChanged(w.ProjectView.onProjectChanged);
@@ -236,7 +240,7 @@ namespace QuickEditor.Monitor
 
             private static void onProjectWindowItemOnGUI(string guid, Rect selectionRect)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.ProjectView == null) { continue; }
                     w.ProjectView.InvokeProjectWindowItemOnGUI(guid, selectionRect, w.ProjectView.onProjectWindowItemOnGUI);
@@ -244,7 +248,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class SceneViewEventProcessor
+        internal sealed partial class SceneViewEventsProcessor
         {
             public static void Process()
             {
@@ -254,7 +258,7 @@ namespace QuickEditor.Monitor
 
             private static void onSceneGUIDelegate(SceneView sceneView)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.SceneView == null) { continue; }
                     w.SceneView.InvokeSceneGUIDelegate(sceneView, w.SceneView.onSceneGUIDelegate);
@@ -283,7 +287,7 @@ namespace QuickEditor.Monitor
         {
             public static void Process(BuildTarget activeBuildTarget)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildTarget == null) { continue; }
                     w.BuildTarget.InvokeActiveBuildTargetChanged(activeBuildTarget, w.BuildTarget.onActiveBuildTargetChanged);
@@ -432,7 +436,7 @@ namespace QuickEditor.Monitor
         {
             public static void ProcessScene(Scene scene)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
                     w.BuildPipeline.InvokeProcessScene(scene, w.BuildPipeline.onProcessScene);
@@ -441,7 +445,7 @@ namespace QuickEditor.Monitor
 
             public static void PreprocessBuild(BuildTarget target, string path)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
                     w.BuildPipeline.InvokePreprocessBuild(target, path, w.BuildPipeline.onPreprocessBuild);
@@ -450,7 +454,7 @@ namespace QuickEditor.Monitor
 
             public static void PostprocessBuild(BuildTarget target, string path)
             {
-                foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
                     w.BuildPipeline.InvokePostprocessBuild(target, path, w.BuildPipeline.onPostprocessBuild);

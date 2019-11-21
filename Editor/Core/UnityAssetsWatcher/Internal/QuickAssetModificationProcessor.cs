@@ -12,7 +12,7 @@ namespace QuickEditor.Monitor
     {
         public static void OnWillCreateAsset(string path)
         {
-            Debug.Log("OnWillCreateAsset " + path);
+            //Debug.Log("OnWillCreateAsset " + path);
         }
 
         public static string[] OnWillSaveAssets(string[] paths)

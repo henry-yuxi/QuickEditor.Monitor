@@ -8,11 +8,56 @@ namespace QuickEditor.Monitor
     using UnityEngine.Events;
     using UnityEngine.SceneManagement;
 
-    public class QuickUnityEditorEventWatcher
+    public sealed partial class QuickUnityEditorEventsWatcher
     {
+        internal static List<QuickUnityEditorEventsWatcher> allWatchers;
+
+        static QuickUnityEditorEventsWatcher()
+        {
+            allWatchers = new List<QuickUnityEditorEventsWatcher>();
+        }
+
+        private QuickUnityEditorEventsWatcher()
+        {
+        }
+
+        ~QuickUnityEditorEventsWatcher()
+        {
+            QuickUnityEditorEventsWatcher.RemoveWatcher(this);
+        }
+
+        #region API
+
+        public readonly BuildPipelineEvents BuildPipeline = new BuildPipelineEvents();
+        public readonly BuildTargetEvents BuildTarget = new BuildTargetEvents();
+        public readonly EditorApplicationEvents EditorApplication = new EditorApplicationEvents();
+        public readonly SceneViewEvents SceneView = new SceneViewEvents();
+        public readonly PrefabUtilityEvents PrefabUtility = new PrefabUtilityEvents();
+        public readonly ProjectViewEvents ProjectView = new ProjectViewEvents();
+        public readonly HierarchyViewEvents HierarchyView = new HierarchyViewEvents();
+
+        public static QuickUnityEditorEventsWatcher Observe()
+        {
+            QuickUnityEditorEventsWatcher w = new QuickUnityEditorEventsWatcher();
+            allWatchers.Add(w);
+            return w;
+        }
+
+        public void Disable()
+        {
+            allWatchers.Remove(this);
+        }
+
+        private static void RemoveWatcher(QuickUnityEditorEventsWatcher watcher)
+        {
+            allWatchers.Remove(watcher);
+        }
+
+        #endregion API
+
         #region 事件相关定义
 
-        public partial class BuildPipelineAdapter
+        public partial class BuildPipelineEvents
         {
             public class ProcessSceneEvent : UnityEvent<Scene> { }
 
@@ -43,7 +88,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class BuildTargetAdapter
+        public partial class BuildTargetEvents
         {
             public class ActiveBuildTargetChangedEvent : UnityEvent<BuildTarget> { }
 
@@ -56,7 +101,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class EditorApplicationAdapter
+        public partial class EditorApplicationEvents
         {
             public class GlobalEvent : UnityEvent<Event> { }
 
@@ -116,7 +161,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class SceneViewAdapter
+        public partial class SceneViewEvents
         {
             public class SceneGUIDelegateEvent : UnityEvent<SceneView> { }
 
@@ -129,7 +174,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class PrefabUtilityAdapter
+        public partial class PrefabUtilityEvents
         {
             public class PrefabInstanceUpdatedEvent : UnityEvent<GameObject> { }
 
@@ -142,7 +187,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class ProjectViewAdapter
+        public partial class ProjectViewEvents
         {
             public class ProjectChangedEvent : UnityEvent { }
 
@@ -164,7 +209,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class HierarchyViewAdapter
+        public partial class HierarchyViewEvents
         {
             public class HierarchyChangedEvent : UnityEvent { }
 
@@ -186,14 +231,6 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public readonly BuildPipelineAdapter BuildPipeline = new BuildPipelineAdapter();
-        public readonly BuildTargetAdapter BuildTarget = new BuildTargetAdapter();
-        public readonly EditorApplicationAdapter EditorApplication = new EditorApplicationAdapter();
-        public readonly SceneViewAdapter SceneView = new SceneViewAdapter();
-        public readonly PrefabUtilityAdapter PrefabUtility = new PrefabUtilityAdapter();
-        public readonly ProjectViewAdapter ProjectView = new ProjectViewAdapter();
-        public readonly HierarchyViewAdapter HierarchyView = new HierarchyViewAdapter();
-
         //public enum PlayModeState
         //{
         //    EnteredEditMode,
@@ -208,9 +245,6 @@ namespace QuickEditor.Monitor
         //}
 
         //public class PlayModeStateChangedEvent : UnityEvent<PlayModeState> { }
-
-        #endregion 事件相关定义
-
         //public readonly PlayModeStateChangedEvent onPlayModeStateChanged = new PlayModeStateChangedEvent();
 
         //public readonly PlayModeStateChangedEvent onWillPlay = new PlayModeStateChangedEvent();
@@ -222,42 +256,7 @@ namespace QuickEditor.Monitor
         //    e.Invoke(playModeState);
         //}
 
-        internal static List<QuickUnityEditorEventWatcher> allWatchers;
-
-        static QuickUnityEditorEventWatcher()
-        {
-            allWatchers = new List<QuickUnityEditorEventWatcher>();
-        }
-
-        private QuickUnityEditorEventWatcher()
-        {
-        }
-
-        ~QuickUnityEditorEventWatcher()
-        {
-            QuickUnityEditorEventWatcher.RemoveWatcher(this);
-        }
-
-        #region API
-
-        public static QuickUnityEditorEventWatcher Observe()
-        {
-            QuickUnityEditorEventWatcher w = new QuickUnityEditorEventWatcher();
-            allWatchers.Add(w);
-            return w;
-        }
-
-        public void Disable()
-        {
-            allWatchers.Remove(this);
-        }
-
-        private static void RemoveWatcher(QuickUnityEditorEventWatcher watcher)
-        {
-            allWatchers.Remove(watcher);
-        }
-
-        #endregion API
+        #endregion 事件相关定义
     }
 }
 

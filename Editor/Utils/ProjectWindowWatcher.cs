@@ -9,11 +9,11 @@ namespace QuickEditor.Monitor
 
     //在project界面按alt显示文件后缀名
     [InitializeOnLoad]
-    public static class ProjectWindowWatcher
+    internal sealed partial class ProjectWindowWatcher
     {
         static ProjectWindowWatcher()
         {
-            QuickUnityEditorEventWatcher watcher = QuickUnityEditorEventWatcher.Observe();
+            QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
             watcher.ProjectView.onProjectWindowItemOnGUI.AddListener(ProjectWindowItemOnGUI);
         }
 
@@ -33,7 +33,7 @@ namespace QuickEditor.Monitor
                     }
                     else
                     {
-                        var labelRect = rect.Translate(new Vector2(19f, 1f));
+                        var labelRect = Translate(rect, new Vector2(19f, 1f));
                         var fileName = Path.GetFileName(assetPath);
                         GUI.Label(labelRect, fileName);
                     }
@@ -100,7 +100,7 @@ namespace QuickEditor.Monitor
             return default(EditorWindow);
         }
 
-        private static Rect Translate(this Rect rect, Vector2 delta)
+        private static Rect Translate(Rect rect, Vector2 delta)
         {
             rect.x += delta.x;
             rect.y += delta.y;
