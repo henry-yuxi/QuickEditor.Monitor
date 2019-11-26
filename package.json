@@ -1,0 +1,9 @@
+{
+  "name": "com.sourcemuch.quickeditor.monitor",
+  "displayName": "QuickEditor.Monitor",
+  "description": "This repo is a Unity editor extension that provides fine-grained event dispatching for Unity asset changes and Unity Editor event changes. ",
+  "version": "0.0.1",
+  "unity": "2017.1",
+  "license": "MIT",
+  "dependencies": {}
+}
