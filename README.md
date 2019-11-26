@@ -44,5 +44,6 @@ Or open the package manager window (menu: Window > Package Manager), select "Add
 
 ## Requirement
 Unity 2018.3 or later
+<br/>
 Git (executable on command-line)
       
