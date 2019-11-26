@@ -29,7 +29,6 @@ QuickUnityEditorEventWatcher watcher = QuickUnityEditorEventWatcher.Observe();
 watcher.EditorApplication.onUpdate.AddListener(onUpdate);
 watcher.SceneView.onSceneGUIDelegate.AddListener(onSceneViewGUI);
 watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
-
 ```
             
 ## Installation
