@@ -25,7 +25,7 @@ watcher.onAssetRenamed.AddListener((before, after) =>
 
 ### UnityEditorEventWatcher example
 ```
-QuickUnityEditorEventWatcher watcher = QuickUnityEditorEventWatcher.Observe();
+QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
 watcher.EditorApplication.onUpdate.AddListener(onUpdate);
 watcher.SceneView.onSceneGUIDelegate.AddListener(onSceneViewGUI);
 watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
