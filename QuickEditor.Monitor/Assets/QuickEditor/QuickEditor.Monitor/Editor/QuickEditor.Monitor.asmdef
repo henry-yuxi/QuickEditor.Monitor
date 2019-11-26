@@ -1,3 +1,10 @@
-﻿{
-	"name": "QuickEditor.Monitor"
+{
+    "name": "QuickEditor.Monitor",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
 }
