@@ -32,8 +32,6 @@ watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdate
 ```
             
 ## Installation
-Unity can not install dependent packages automatically at present, you have to install them manually:
-https://github.com/henry-yuxi/QuickEditor.Common
 
 Find Packages/manifest.json in your project and edit it to look like this:
 {
