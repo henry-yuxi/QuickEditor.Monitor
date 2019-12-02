@@ -8,9 +8,6 @@ namespace QuickEditor.Monitor
     [InitializeOnLoad]
     internal sealed partial class ProjectEditorViewWatcher
     {
-        private static string TAG = typeof(ProjectEditorViewWatcher).Name;
-        private const string DefaultPrefix = "> ";
-        private const string FORMAT = DefaultPrefix + "<color=black><b>[{0}]</b></color> --> {1}";
 
         static ProjectEditorViewWatcher()
         {
@@ -33,7 +30,7 @@ namespace QuickEditor.Monitor
                         UnityEngine.Object handleObj = DragAndDrop.objectReferences[i];
                         if (handleObj != null)
                         {
-                            Debug.LogError(string.Format(FORMAT, TAG, handleObj.GetType()));
+                            Debug.LogError(string.Format(Utils.FORMAT, Utils.Assembly, handleObj.GetType()));
                         }
                     }
                 }
