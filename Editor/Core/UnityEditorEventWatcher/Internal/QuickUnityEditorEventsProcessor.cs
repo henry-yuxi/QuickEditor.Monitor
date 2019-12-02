@@ -252,8 +252,13 @@ namespace QuickEditor.Monitor
         {
             public static void Process()
             {
+#if UNITY_2019_1_OR_NEWER
+                SceneView.duringSceneGui -= onSceneGUIDelegate;
+                SceneView.duringSceneGui += onSceneGUIDelegate;
+#else
                 SceneView.onSceneGUIDelegate -= onSceneGUIDelegate;
                 SceneView.onSceneGUIDelegate += onSceneGUIDelegate;
+#endif
             }
 
             private static void onSceneGUIDelegate(SceneView sceneView)
