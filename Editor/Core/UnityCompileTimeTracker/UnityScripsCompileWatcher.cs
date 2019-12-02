@@ -9,10 +9,6 @@ namespace QuickEditor.Monitor
     [InitializeOnLoad]
     internal sealed partial class UnityScripsCompileWatcher
     {
-        private static string TAG = typeof(UnityScripsCompileWatcher).Name;
-        private const string DefaultPrefix = "> ";
-        private const string FORMAT = DefaultPrefix + "<color=black><b>[{0}]</b></color> --> {1}";
-
         public static event Action StartedCompiling = delegate { };
 
         public static event Action FinishedCompiling = delegate { };
@@ -52,7 +48,7 @@ namespace QuickEditor.Monitor
             {
                 compilationFinishedLog += " (error)";
             }
-            Debug.Log(string.Format(FORMAT, TAG, "<color=green>Unity Scripts Compiling Completed. </color>" + compilationFinishedLog));
+            Debug.Log(string.Format(Utils.FORMAT, Utils.Assembly, "<color=green>Unity Scripts Compiling Completed. </color>" + compilationFinishedLog));
         }
 
         private static void onEditorUpdate()
@@ -144,7 +140,7 @@ namespace QuickEditor.Monitor
         [UnityEditor.Callbacks.DidReloadScripts]
         private static void OnUnityScripsCompilingCompleted()
         {
-            Debug.Log(string.Format(FORMAT, TAG, "<color=green>Unity Scripts Compiling Completed.</color>"));
+            Debug.Log(string.Format(Utils.FORMAT, Utils.Assembly, "<color=green>Unity Scripts Compiling Completed.</color>"));
         }
     }
 }
