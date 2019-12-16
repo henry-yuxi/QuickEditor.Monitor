@@ -37,12 +37,11 @@ watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdate
 
 In Packages folder, you will see a file named manifest.json. 
 
-Add below code
+using this package add lines into ./Packages/manifest.json like next sample:
 ```
 {
   "dependencies": {
     "com.sourcemuch.quickeditor.monitor": "https://github.com/henry-yuxi/QuickEditor.Monitor.git#0.0.8",
-    ...
   }
 }
 ```
