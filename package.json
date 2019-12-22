@@ -1,10 +1,11 @@
 {
   "name": "com.sourcemuch.quickeditor.monitor",
   "displayName": "Quick Editor Monitor",
-  "version": "0.1.0-preview",
-  "unity": "2017.1",
+  "version": "0.1.1-preview",
+  "unity": "2018.1",
+  "unityRelease": "0f1",
   "description": "This package is a Unity editor extension that provides fine-grained event dispatching for Unity asset changes and Unity Editor event changes. ",
-  "keywords": [ "monitor", "event", "unity" ],
+  "keywords": [ "monitor", "event", "editor", "unity" ],
   "author": {
     "name": "Henry Hu",
     "email": "henry890307@yeah.net",
