@@ -11,7 +11,7 @@ namespace QuickEditor.Monitor
     {
         public class FileEvent : UnityEvent<QuickAssetFileInfo> { }
 
-        public class FileMoveEvent : UnityEvent<QuickAssetFileInfo, QuickAssetFileInfo> { } // AssetFileInfo before and after the move
+        public class FileMoveEvent : UnityEvent<QuickAssetFileInfo, QuickAssetFileInfo> { }
 
         internal static string[] allAssets;
         internal static List<QuickAssetWatcher> allWatchers;
@@ -19,27 +19,27 @@ namespace QuickEditor.Monitor
         /// <summary>
         /// Occurs when an asset is first created.
         /// </summary>
-        public readonly FileEvent onAssetCreated = new FileEvent();
+        public readonly FileEvent OnAssetCreated = new FileEvent();
 
         /// <summary>
         /// Occurs when an asset is deleted or is moved out of scope.
         /// </summary>
-        public readonly FileEvent onAssetDeleted = new FileEvent();
+        public readonly FileEvent OnAssetDeleted = new FileEvent();
 
         /// <summary>
         /// Occurs when the content of an asset is modified.
         /// </summary>
-        public readonly FileEvent onAssetModified = new FileEvent();
+        public readonly FileEvent OnAssetModified = new FileEvent();
 
         /// <summary>
         /// Occurs when an asset is renamed in-place.
         /// </summary>
-        public readonly FileMoveEvent onAssetRenamed = new FileMoveEvent();
+        public readonly FileMoveEvent OnAssetRenamed = new FileMoveEvent();
 
         /// <summary>
         /// Occurs when an asset is moved to a new location within scope.
         /// </summary>
-        public readonly FileMoveEvent onAssetMoved = new FileMoveEvent();
+        public readonly FileMoveEvent OnAssetMoved = new FileMoveEvent();
 
         public readonly string basePath;
         public readonly UnityAssetType observedAssetTypes;
@@ -128,11 +128,11 @@ namespace QuickEditor.Monitor
 
         public void Disable()
         {
-            onAssetCreated.RemoveAllListeners();
-            onAssetDeleted.RemoveAllListeners();
-            onAssetModified.RemoveAllListeners();
-            onAssetMoved.RemoveAllListeners();
-            onAssetRenamed.RemoveAllListeners();
+            OnAssetCreated.RemoveAllListeners();
+            OnAssetDeleted.RemoveAllListeners();
+            OnAssetModified.RemoveAllListeners();
+            OnAssetMoved.RemoveAllListeners();
+            OnAssetRenamed.RemoveAllListeners();
             allWatchers.Remove(this);
         }
 

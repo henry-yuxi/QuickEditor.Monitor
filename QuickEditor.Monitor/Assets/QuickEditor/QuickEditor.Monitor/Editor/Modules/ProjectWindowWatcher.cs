@@ -14,7 +14,7 @@ namespace QuickEditor.Monitor
         static ProjectWindowWatcher()
         {
             QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
-            watcher.ProjectView.onProjectWindowItemOnGUI.AddListener(ProjectWindowItemOnGUI);
+            watcher.ProjectView.OnProjectWindowItemOnGUI.AddListener(ProjectWindowItemOnGUI);
         }
 
         private static void ProjectWindowItemOnGUI(string guid, Rect rect)

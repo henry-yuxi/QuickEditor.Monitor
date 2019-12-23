@@ -11,7 +11,7 @@ namespace QuickEditor.Monitor
         static ProjectBuildTargetWatcher()
         {
             QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
-            watcher.BuildTarget.onActiveBuildTargetChanged.AddListener(target =>
+            watcher.BuildTarget.OnBuildTargetChanged.AddListener(target =>
             {
                 Debug.Log("Switch Platform Successed, Current Platform : {0}", target);
             });

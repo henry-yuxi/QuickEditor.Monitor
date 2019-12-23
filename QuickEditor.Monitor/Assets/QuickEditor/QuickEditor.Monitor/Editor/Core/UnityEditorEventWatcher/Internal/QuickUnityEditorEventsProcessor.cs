@@ -113,7 +113,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null) { continue; }
-                    w.EditorApplication.InvokePlayModeStateChanged(changedState, w.EditorApplication.onPlayModeStateChanged);
+                    w.EditorApplication.InvokePlayModeStateChanged(changedState, w.EditorApplication.OnPlayModeStateChanged);
                 }
                 mCurState = changedState;
                 mIgnore = false;
@@ -158,7 +158,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null) { continue; }
-                    w.EditorApplication.InvokePlayModeStateChanged(changedState, w.EditorApplication.onPlayModeStateChanged);
+                    w.EditorApplication.InvokePlayModeStateChanged(changedState, w.EditorApplication.OnPlayModeStateChanged);
                 }
                 mCurState = changedState;
             }
@@ -168,7 +168,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeDelayCall(w.EditorApplication.onDelayCall);
+                    w.EditorApplication.InvokeDelayCall(w.EditorApplication.OnDelayCall);
                 }
             }
 
@@ -177,7 +177,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeUpdate(w.EditorApplication.onUpdate);
+                    w.EditorApplication.InvokeUpdate(w.EditorApplication.OnUpdate);
                 }
             }
 
@@ -186,7 +186,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeGlobalEvent(current, w.EditorApplication.onGlobal);
+                    w.EditorApplication.InvokeGlobalEvent(current, w.EditorApplication.OnGlobal);
                 }
             }
 
@@ -195,7 +195,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeContextualPropertyMenu(menu, property, w.EditorApplication.onContextualPropertyMenu);
+                    w.EditorApplication.InvokeContextualPropertyMenu(menu, property, w.EditorApplication.OnContextualPropertyMenu);
                 }
             }
 
@@ -204,7 +204,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeModifierKeysChanged(w.EditorApplication.onModifierKeysChanged);
+                    w.EditorApplication.InvokeModifierKeysChanged(w.EditorApplication.OnModifierKeysChanged);
                 }
             }
 
@@ -213,7 +213,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeSearchChanged(w.EditorApplication.onSearchChanged);
+                    w.EditorApplication.InvokeSearchChanged(w.EditorApplication.OnSearchChanged);
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.HierarchyView == null) { continue; }
-                    w.HierarchyView.InvokeHierarchyChanged(w.HierarchyView.onHierarchyChanged);
+                    w.HierarchyView.InvokeHierarchyChanged(w.HierarchyView.OnHierarchyChanged);
                 }
             }
 
@@ -248,7 +248,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.HierarchyView == null) { continue; }
-                    w.HierarchyView.InvokeHierarchyWindowItemOnGUI(instanceID, selectionRect, w.HierarchyView.onHierarchyWindowItemOnGUI);
+                    w.HierarchyView.InvokeHierarchyWindowItemOnGUI(instanceID, selectionRect, w.HierarchyView.OnHierarchyWindowItemOnGUI);
                 }
             }
         }
@@ -270,7 +270,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.PrefabUtility == null) { continue; }
-                    w.PrefabUtility.InvokePrefabInstanceUpdated(instance, w.PrefabUtility.onPrefabInstanceUpdated);
+                    w.PrefabUtility.InvokePrefabInstanceUpdated(instance, w.PrefabUtility.OnPrefabInstanceUpdated);
                 }
             }
         }
@@ -297,7 +297,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.ProjectView == null) { continue; }
-                    w.ProjectView.InvokeProjectChanged(w.ProjectView.onProjectChanged);
+                    w.ProjectView.InvokeProjectChanged(w.ProjectView.OnProjectChanged);
                 }
             }
 
@@ -306,7 +306,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.ProjectView == null) { continue; }
-                    w.ProjectView.InvokeProjectWindowItemOnGUI(guid, selectionRect, w.ProjectView.onProjectWindowItemOnGUI);
+                    w.ProjectView.InvokeProjectWindowItemOnGUI(guid, selectionRect, w.ProjectView.OnProjectWindowItemOnGUI);
                 }
             }
         }
@@ -333,7 +333,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.SceneView == null) { continue; }
-                    w.SceneView.InvokeSceneGUIDelegate(sceneView, w.SceneView.onSceneGUIDelegate);
+                    w.SceneView.InvokeSceneGUIDelegate(sceneView, w.SceneView.OnSceneGUIDelegate);
                 }
             }
         }
@@ -364,7 +364,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildTarget == null) { continue; }
-                    w.BuildTarget.InvokeActiveBuildTargetChanged(activeBuildTarget, w.BuildTarget.onActiveBuildTargetChanged);
+                    w.BuildTarget.InvokeActiveBuildTargetChanged(activeBuildTarget, w.BuildTarget.OnBuildTargetChanged);
                 }
             }
         }
@@ -459,7 +459,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
-                    w.BuildPipeline.InvokeProcessScene(scene, w.BuildPipeline.onProcessScene);
+                    w.BuildPipeline.InvokeProcessScene(scene, w.BuildPipeline.OnProcessScene);
                 }
             }
 
@@ -468,7 +468,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
-                    w.BuildPipeline.InvokePreprocessBuild(target, path, w.BuildPipeline.onPreprocessBuild);
+                    w.BuildPipeline.InvokePreprocessBuild(target, path, w.BuildPipeline.OnPreprocessBuild);
                 }
             }
 
@@ -477,7 +477,7 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
-                    w.BuildPipeline.InvokePostprocessBuild(target, path, w.BuildPipeline.onPostprocessBuild);
+                    w.BuildPipeline.InvokePostprocessBuild(target, path, w.BuildPipeline.OnPostprocessBuild);
                 }
             }
         }

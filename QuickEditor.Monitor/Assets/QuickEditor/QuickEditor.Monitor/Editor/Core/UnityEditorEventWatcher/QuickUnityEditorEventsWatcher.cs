@@ -28,14 +28,6 @@ namespace QuickEditor.Monitor
 
         #region API
 
-        public readonly BuildPipelineEvents BuildPipeline = new BuildPipelineEvents();
-        public readonly BuildTargetEvents BuildTarget = new BuildTargetEvents();
-        public readonly EditorApplicationEvents EditorApplication = new EditorApplicationEvents();
-        public readonly HierarchyViewEvents HierarchyView = new HierarchyViewEvents();
-        public readonly PrefabUtilityEvents PrefabUtility = new PrefabUtilityEvents();
-        public readonly ProjectViewEvents ProjectView = new ProjectViewEvents();
-        public readonly SceneViewEvents SceneView = new SceneViewEvents();
-
         public static QuickUnityEditorEventsWatcher Observe()
         {
             QuickUnityEditorEventsWatcher w = new QuickUnityEditorEventsWatcher();
@@ -53,6 +45,14 @@ namespace QuickEditor.Monitor
             allWatchers.Remove(watcher);
         }
 
+        public readonly BuildPipelineEvents BuildPipeline = new BuildPipelineEvents();
+        public readonly BuildTargetEvents BuildTarget = new BuildTargetEvents();
+        public readonly EditorApplicationEvents EditorApplication = new EditorApplicationEvents();
+        public readonly HierarchyViewEvents HierarchyView = new HierarchyViewEvents();
+        public readonly PrefabUtilityEvents PrefabUtility = new PrefabUtilityEvents();
+        public readonly ProjectViewEvents ProjectView = new ProjectViewEvents();
+        public readonly SceneViewEvents SceneView = new SceneViewEvents();
+
         #endregion API
 
         #region 事件相关定义
@@ -65,9 +65,9 @@ namespace QuickEditor.Monitor
 
             public class PostprocessBuildEvent : UnityEvent<BuildTarget, string> { }
 
-            public readonly ProcessSceneEvent onProcessScene = new ProcessSceneEvent();
-            public readonly PreprocessBuildEvent onPreprocessBuild = new PreprocessBuildEvent();
-            public readonly PostprocessBuildEvent onPostprocessBuild = new PostprocessBuildEvent();
+            public readonly ProcessSceneEvent OnProcessScene = new ProcessSceneEvent();
+            public readonly PreprocessBuildEvent OnPreprocessBuild = new PreprocessBuildEvent();
+            public readonly PostprocessBuildEvent OnPostprocessBuild = new PostprocessBuildEvent();
 
             internal void InvokeProcessScene(Scene scene, ProcessSceneEvent e)
             {
@@ -92,7 +92,7 @@ namespace QuickEditor.Monitor
         {
             public class ActiveBuildTargetChangedEvent : UnityEvent<BuildTarget> { }
 
-            public readonly ActiveBuildTargetChangedEvent onActiveBuildTargetChanged = new ActiveBuildTargetChangedEvent();
+            public readonly ActiveBuildTargetChangedEvent OnBuildTargetChanged = new ActiveBuildTargetChangedEvent();
 
             internal void InvokeActiveBuildTargetChanged(BuildTarget activeBuildTarget, ActiveBuildTargetChangedEvent e)
             {
@@ -117,18 +117,18 @@ namespace QuickEditor.Monitor
 
             public class PlayModeStateEvent : UnityEvent<PlayModeState> { }
 
-            //[System.Obsolete("This event is obsolete in UNITY_2020_0_OR_NEWER", true)]
-            public readonly DelayCallEvent onDelayCall = new DelayCallEvent();
+            //[System.Obsolete("This event is obsolete in UNITY_2020_0_OR_NEWER")]
+            public readonly DelayCallEvent OnDelayCall = new DelayCallEvent();
 
-            public readonly UpdateEvent onUpdate = new UpdateEvent();
+            public readonly UpdateEvent OnUpdate = new UpdateEvent();
 
-            public readonly GlobalEvent onGlobal = new GlobalEvent();
+            public readonly GlobalEvent OnGlobal = new GlobalEvent();
 
-            public readonly ContextualPropertyMenuEvent onContextualPropertyMenu = new ContextualPropertyMenuEvent();
-            public readonly ModifierKeysChangedEvent onModifierKeysChanged = new ModifierKeysChangedEvent();
-            public readonly SearchChangedEvent onSearchChanged = new SearchChangedEvent();
+            public readonly ContextualPropertyMenuEvent OnContextualPropertyMenu = new ContextualPropertyMenuEvent();
+            public readonly ModifierKeysChangedEvent OnModifierKeysChanged = new ModifierKeysChangedEvent();
+            public readonly SearchChangedEvent OnSearchChanged = new SearchChangedEvent();
 
-            public readonly PlayModeStateEvent onPlayModeStateChanged = new PlayModeStateEvent();
+            public readonly PlayModeStateEvent OnPlayModeStateChanged = new PlayModeStateEvent();
 
             internal void InvokeDelayCall(DelayCallEvent e)
             {
@@ -179,8 +179,8 @@ namespace QuickEditor.Monitor
 
             public class HierarchyWindowItemOnGUIEvent : UnityEvent<int, Rect> { }
 
-            public readonly HierarchyChangedEvent onHierarchyChanged = new HierarchyChangedEvent();
-            public readonly HierarchyWindowItemOnGUIEvent onHierarchyWindowItemOnGUI = new HierarchyWindowItemOnGUIEvent();
+            public readonly HierarchyChangedEvent OnHierarchyChanged = new HierarchyChangedEvent();
+            public readonly HierarchyWindowItemOnGUIEvent OnHierarchyWindowItemOnGUI = new HierarchyWindowItemOnGUIEvent();
 
             internal void InvokeHierarchyChanged(HierarchyChangedEvent e)
             {
@@ -199,7 +199,7 @@ namespace QuickEditor.Monitor
         {
             public class PrefabInstanceUpdatedEvent : UnityEvent<GameObject> { }
 
-            public readonly PrefabInstanceUpdatedEvent onPrefabInstanceUpdated = new PrefabInstanceUpdatedEvent();
+            public readonly PrefabInstanceUpdatedEvent OnPrefabInstanceUpdated = new PrefabInstanceUpdatedEvent();
 
             internal void InvokePrefabInstanceUpdated(GameObject instance, PrefabInstanceUpdatedEvent e)
             {
@@ -214,8 +214,8 @@ namespace QuickEditor.Monitor
 
             public class ProjectWindowItemOnGUIEvent : UnityEvent<string, Rect> { }
 
-            public readonly ProjectChangedEvent onProjectChanged = new ProjectChangedEvent();
-            public readonly ProjectWindowItemOnGUIEvent onProjectWindowItemOnGUI = new ProjectWindowItemOnGUIEvent();
+            public readonly ProjectChangedEvent OnProjectChanged = new ProjectChangedEvent();
+            public readonly ProjectWindowItemOnGUIEvent OnProjectWindowItemOnGUI = new ProjectWindowItemOnGUIEvent();
 
             internal void InvokeProjectChanged(ProjectChangedEvent e)
             {
@@ -234,7 +234,7 @@ namespace QuickEditor.Monitor
         {
             public class SceneGUIDelegateEvent : UnityEvent<SceneView> { }
 
-            public readonly SceneGUIDelegateEvent onSceneGUIDelegate = new SceneGUIDelegateEvent();
+            public readonly SceneGUIDelegateEvent OnSceneGUIDelegate = new SceneGUIDelegateEvent();
 
             internal void InvokeSceneGUIDelegate(SceneView sceneview, SceneGUIDelegateEvent e)
             {
