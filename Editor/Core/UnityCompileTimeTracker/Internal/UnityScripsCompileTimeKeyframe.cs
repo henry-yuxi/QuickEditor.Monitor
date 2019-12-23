@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using UnityEngine;
+    using Debug = LoggerUtils;
 
     [Serializable]
     internal sealed partial class UnityScripsCompileTimeKeyframe

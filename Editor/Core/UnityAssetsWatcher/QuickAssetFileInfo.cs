@@ -102,9 +102,6 @@ namespace QuickEditor.Monitor
             this.AssetProcessType = assetProcessType;
         }
 
-        /// <summary>
-        /// Return the path for this asset relative to the current project's Assets folder.
-        /// </summary>
         public string AssetsRelativePath
         {
             get
@@ -121,9 +118,6 @@ namespace QuickEditor.Monitor
             return _path.Replace("\\", "/");
         }
 
-        /// <summary>
-        /// Extension (with leading dot) for the given Unity asset type
-        /// </summary>
         public static string[] GetExtensionsForType(UnityAssetType type)
         {
             string[] ext;

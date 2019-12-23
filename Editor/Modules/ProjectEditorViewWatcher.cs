@@ -4,16 +4,22 @@ namespace QuickEditor.Monitor
 {
     using UnityEditor;
     using UnityEngine;
+    using Debug = LoggerUtils;
 
     [InitializeOnLoad]
     internal sealed partial class ProjectEditorViewWatcher
     {
-
         static ProjectEditorViewWatcher()
         {
             QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
             watcher.SceneView.onSceneGUIDelegate.AddListener(onSceneViewGUI);
             watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
+            watcher.EditorApplication.onPlayModeStateChanged.AddListener(OnPlayModeStateChanged);
+        }
+
+        private static void OnPlayModeStateChanged(QuickUnityEditorEventsWatcher.PlayModeState arg0)
+        {
+            Debug.Log("Editor PlayModeState: {0}", arg0);
         }
 
         private static void onSceneViewGUI(SceneView sceneview)
@@ -30,7 +36,7 @@ namespace QuickEditor.Monitor
                         UnityEngine.Object handleObj = DragAndDrop.objectReferences[i];
                         if (handleObj != null)
                         {
-                            Debug.LogError(string.Format(Utils.FORMAT, Utils.Assembly, handleObj.GetType()));
+                            //Debug.Log(handleObj.GetType());
                         }
                     }
                 }
@@ -53,37 +59,6 @@ namespace QuickEditor.Monitor
                 };
             }
         }
-
-        //private static void OnPlayModeStateChanged()
-        //{
-        //    if (EditorApplication.isPlayingOrWillChangePlaymode)
-        //    {
-        //        if (!EditorApplication.isPlaying)
-        //        {
-        //            if (IsInited && mOnWillPlayEvent != null)
-        //            {
-        //                mOnWillPlayEvent();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (IsInited && mOnBeginPlayEvent != null)
-        //            {
-        //                mOnBeginPlayEvent();
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (EditorApplication.isPlaying)
-        //        {
-        //            if (IsInited && mOnWillStopEvent != null)
-        //            {
-        //                mOnWillStopEvent();
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
 

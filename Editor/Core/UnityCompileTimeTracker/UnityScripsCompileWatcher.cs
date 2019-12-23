@@ -4,7 +4,7 @@ namespace QuickEditor.Monitor
 {
     using System;
     using UnityEditor;
-    using UnityEngine;
+    using Debug = LoggerUtils;
 
     [InitializeOnLoad]
     internal sealed partial class UnityScripsCompileWatcher
@@ -48,7 +48,7 @@ namespace QuickEditor.Monitor
             {
                 compilationFinishedLog += " (error)";
             }
-            Debug.Log(string.Format(Utils.FORMAT, Utils.Assembly, "<color=green>Unity Scripts Compiling Completed. </color>" + compilationFinishedLog));
+            Debug.Log("<color=green>Unity Scripts Compiling Completed. </color>" + compilationFinishedLog);
         }
 
         private static void onEditorUpdate()
@@ -140,7 +140,7 @@ namespace QuickEditor.Monitor
         [UnityEditor.Callbacks.DidReloadScripts]
         private static void OnUnityScripsCompilingCompleted()
         {
-            Debug.Log(string.Format(Utils.FORMAT, Utils.Assembly, "<color=green>Unity Scripts Compiling Completed.</color>"));
+            Debug.Log("<color=green>Unity Scripts Compiling Completed.</color>");
         }
     }
 }
