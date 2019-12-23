@@ -23,7 +23,7 @@ watcher.OnAssetRenamed.AddListener((before, after) =>
 });
 ```
 
-### UnityEditorEventWatcher example
+### UnityEditorEventsWatcher example
 ```
 QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
 watcher.EditorApplication.OnUpdate.AddListener(onUpdate);
@@ -41,7 +41,7 @@ using this package add lines into ./Packages/manifest.json like next sample:
 ```
 {
   "dependencies": {
-    "com.sourcemuch.quickeditor.monitor": "https://github.com/henry-yuxi/QuickEditor.Monitor.git#0.0.8",
+    "com.sourcemuch.quickeditor.monitor": "https://github.com/henry-yuxi/QuickEditor.Monitor.git#0.1.4",
   }
 }
 ```
@@ -51,7 +51,7 @@ using this package add lines into ./Packages/manifest.json like next sample:
 In Unity 2019.3 or greater, Package Manager is include the new feature that able to install the package via Git.
 
 Open the package manager window (menu: Window > Package Manager), select "Add package from git URL...", fill in this in the pop-up textbox: 
-https://github.com/henry-yuxi/QuickEditor.Monitor.git#0.0.8.
+https://github.com/henry-yuxi/QuickEditor.Monitor.git#0.1.4.
 
 
 ### Unity UPM Git Extension (For 2019.2 and older version)
