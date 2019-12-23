@@ -12,9 +12,9 @@ namespace QuickEditor.Monitor
         static ProjectEditorViewWatcher()
         {
             QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
-            watcher.SceneView.onSceneGUIDelegate.AddListener(onSceneViewGUI);
-            watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
-            watcher.EditorApplication.onPlayModeStateChanged.AddListener(OnPlayModeStateChanged);
+            watcher.SceneView.OnSceneGUIDelegate.AddListener(onSceneViewGUI);
+            watcher.PrefabUtility.OnPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
+            watcher.EditorApplication.OnPlayModeStateChanged.AddListener(OnPlayModeStateChanged);
         }
 
         private static void OnPlayModeStateChanged(QuickUnityEditorEventsWatcher.PlayModeState arg0)
@@ -53,7 +53,7 @@ namespace QuickEditor.Monitor
             AssetDatabase.SaveAssets();
             if (go)
             {
-                QuickUnityEditorEventsWatcher.Observe().EditorApplication.onDelayCall.AddListener(delegate
+                QuickUnityEditorEventsWatcher.Observe().EditorApplication.OnDelayCall.AddListener(delegate
                 {
                     Selection.activeGameObject = go;
                 });

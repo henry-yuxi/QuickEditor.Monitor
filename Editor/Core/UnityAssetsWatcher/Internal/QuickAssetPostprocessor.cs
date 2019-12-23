@@ -31,11 +31,11 @@ namespace QuickEditor.Monitor
             // Dispatch asset events to available watchers
             foreach (QuickAssetWatcher w in QuickAssetWatcher.allWatchers)
             {
-                w.InvokeEventForPaths(created, w.onAssetCreated);
-                w.InvokeEventForPaths(deletedAssets, w.onAssetDeleted);
-                w.InvokeEventForPaths(modified, w.onAssetModified);
-                w.InvokeMovedEventForPaths(renamed, w.onAssetRenamed);
-                w.InvokeMovedEventForPaths(moved, w.onAssetMoved);
+                w.InvokeEventForPaths(created, w.OnAssetCreated);
+                w.InvokeEventForPaths(deletedAssets, w.OnAssetDeleted);
+                w.InvokeEventForPaths(modified, w.OnAssetModified);
+                w.InvokeMovedEventForPaths(renamed, w.OnAssetRenamed);
+                w.InvokeMovedEventForPaths(moved, w.OnAssetMoved);
             }
 
             // Update asset paths cache

@@ -26,7 +26,7 @@ namespace QuickEditor.Monitor
         static UnityScripsCompileWatcher()
         {
             QuickUnityEditorEventsWatcher mEventWatcher = QuickUnityEditorEventsWatcher.Observe();
-            mEventWatcher.EditorApplication.onUpdate.AddListener(onEditorUpdate);
+            mEventWatcher.EditorApplication.OnUpdate.AddListener(onEditorUpdate);
 
             //QuickAssetWatcher watcher = QuickAssetWatcher.Observe();
             //watcher.onAssetCreated.AddListener(onAssetHandle);
