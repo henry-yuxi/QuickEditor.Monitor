@@ -53,10 +53,10 @@ namespace QuickEditor.Monitor
             AssetDatabase.SaveAssets();
             if (go)
             {
-                EditorApplication.delayCall = delegate
+                QuickUnityEditorEventsWatcher.Observe().EditorApplication.onDelayCall.AddListener(delegate
                 {
                     Selection.activeGameObject = go;
-                };
+                });
             }
         }
     }
