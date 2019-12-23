@@ -117,7 +117,7 @@ namespace QuickEditor.Monitor
 
             public class PlayModeStateEvent : UnityEvent<PlayModeState> { }
 
-            [System.Obsolete("This event is obsolete in UNITY_2020_0_OR_NEWER", true)]
+            //[System.Obsolete("This event is obsolete in UNITY_2020_0_OR_NEWER", true)]
             public readonly DelayCallEvent onDelayCall = new DelayCallEvent();
 
             public readonly UpdateEvent onUpdate = new UpdateEvent();
