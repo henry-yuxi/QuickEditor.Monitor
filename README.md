@@ -6,19 +6,19 @@ Take a look at the sample project provided here for an example.
 ### UnityAssetsWatcher example
 ```
 QuickAssetWatcher watcher = QuickAssetWatcher.Observe();
-watcher.onAssetCreated.AddListener(asset =>
+watcher.OnAssetCreated.AddListener(asset =>
 {
 });
-watcher.onAssetDeleted.AddListener(asset =>
+watcher.OnAssetDeleted.AddListener(asset =>
 {
 });
-watcher.onAssetModified.AddListener(asset =>
+watcher.OnAssetModified.AddListener(asset =>
 {
 });
-watcher.onAssetMoved.AddListener((before, after) =>
+watcher.OnAssetMoved.AddListener((before, after) =>
 {
 });
-watcher.onAssetRenamed.AddListener((before, after) =>
+watcher.OnAssetRenamed.AddListener((before, after) =>
 {
 });
 ```
@@ -26,9 +26,9 @@ watcher.onAssetRenamed.AddListener((before, after) =>
 ### UnityEditorEventWatcher example
 ```
 QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
-watcher.EditorApplication.onUpdate.AddListener(onUpdate);
-watcher.SceneView.onSceneGUIDelegate.AddListener(onSceneViewGUI);
-watcher.PrefabUtility.onPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
+watcher.EditorApplication.OnUpdate.AddListener(onUpdate);
+watcher.SceneView.OnSceneGUIDelegate.AddListener(onSceneViewGUI);
+watcher.PrefabUtility.OnPrefabInstanceUpdated.AddListener(OnPrefabInstanceUpdated);
 ```
             
 ## How to install?
