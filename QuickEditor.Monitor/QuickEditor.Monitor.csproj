@@ -69,7 +69,7 @@
      <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Modules\ProjectBuildTargetWatcher.cs" />
      <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Modules\ProjectEditorViewWatcher.cs" />
      <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Modules\ProjectWindowWatcher.cs" />
-     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Utils\Utils.cs" />
+     <Compile Include="Assets\QuickEditor\QuickEditor.Monitor\Editor\Utils\LoggerUtils.cs" />
  <Reference Include="UnityEngine.AIModule">
  <HintPath>D:/Program Files/Unity/2018.2.21f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
  </Reference>

@@ -3,7 +3,7 @@
     using System;
     using System.Reflection;
     using UnityEditor;
-    using UnityEngine;
+    using Debug = LoggerUtils;
 
     public struct UnityConsoleCountsByType
     {

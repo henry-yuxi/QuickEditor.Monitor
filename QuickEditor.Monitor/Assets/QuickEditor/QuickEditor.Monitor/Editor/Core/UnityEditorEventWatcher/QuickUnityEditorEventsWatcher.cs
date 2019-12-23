@@ -31,10 +31,10 @@ namespace QuickEditor.Monitor
         public readonly BuildPipelineEvents BuildPipeline = new BuildPipelineEvents();
         public readonly BuildTargetEvents BuildTarget = new BuildTargetEvents();
         public readonly EditorApplicationEvents EditorApplication = new EditorApplicationEvents();
-        public readonly SceneViewEvents SceneView = new SceneViewEvents();
+        public readonly HierarchyViewEvents HierarchyView = new HierarchyViewEvents();
         public readonly PrefabUtilityEvents PrefabUtility = new PrefabUtilityEvents();
         public readonly ProjectViewEvents ProjectView = new ProjectViewEvents();
-        public readonly HierarchyViewEvents HierarchyView = new HierarchyViewEvents();
+        public readonly SceneViewEvents SceneView = new SceneViewEvents();
 
         public static QuickUnityEditorEventsWatcher Observe()
         {
@@ -103,40 +103,34 @@ namespace QuickEditor.Monitor
 
         public partial class EditorApplicationEvents
         {
-            public class GlobalEvent : UnityEvent<Event> { }
-
-            public class SearchChangedEvent : UnityEvent { }
-
-            public class ModifierKeysChangedEvent : UnityEvent { }
+            public class DelayCallEvent : UnityEvent { }
 
             public class UpdateEvent : UnityEvent { }
 
-            public class DelayCallEvent : UnityEvent { }
+            public class GlobalEvent : UnityEvent<Event> { }
 
             public class ContextualPropertyMenuEvent : UnityEvent<GenericMenu, SerializedProperty> { }
 
-            public readonly GlobalEvent onGlobal = new GlobalEvent();
-            public readonly SearchChangedEvent onSearchChanged = new SearchChangedEvent();
-            public readonly ModifierKeysChangedEvent onModifierKeysChanged = new ModifierKeysChangedEvent();
+            public class ModifierKeysChangedEvent : UnityEvent { }
 
-            public readonly UpdateEvent onUpdate = new UpdateEvent();
+            public class SearchChangedEvent : UnityEvent { }
+
+            public class PlayModeStateEvent : UnityEvent<PlayModeState> { }
+
+            [System.Obsolete("This event is obsolete in UNITY_2020_0_OR_NEWER", true)]
             public readonly DelayCallEvent onDelayCall = new DelayCallEvent();
 
+            public readonly UpdateEvent onUpdate = new UpdateEvent();
+
+            public readonly GlobalEvent onGlobal = new GlobalEvent();
+
             public readonly ContextualPropertyMenuEvent onContextualPropertyMenu = new ContextualPropertyMenuEvent();
+            public readonly ModifierKeysChangedEvent onModifierKeysChanged = new ModifierKeysChangedEvent();
+            public readonly SearchChangedEvent onSearchChanged = new SearchChangedEvent();
 
-            internal void InvokeGlobalEvent(Event current, GlobalEvent e)
-            {
-                if (e == null) { return; }
-                e.Invoke(current);
-            }
+            public readonly PlayModeStateEvent onPlayModeStateChanged = new PlayModeStateEvent();
 
-            internal void InvokeSearchChanged(SearchChangedEvent e)
-            {
-                if (e == null) { return; }
-                e.Invoke();
-            }
-
-            internal void InvokeModifierKeysChanged(ModifierKeysChangedEvent e)
+            internal void InvokeDelayCall(DelayCallEvent e)
             {
                 if (e == null) { return; }
                 e.Invoke();
@@ -148,10 +142,10 @@ namespace QuickEditor.Monitor
                 e.Invoke();
             }
 
-            internal void InvokeDelayCall(DelayCallEvent e)
+            internal void InvokeGlobalEvent(Event current, GlobalEvent e)
             {
                 if (e == null) { return; }
-                e.Invoke();
+                e.Invoke(current);
             }
 
             internal void InvokeContextualPropertyMenu(GenericMenu menu, SerializedProperty property, ContextualPropertyMenuEvent e)
@@ -159,18 +153,45 @@ namespace QuickEditor.Monitor
                 if (e == null) { return; }
                 e.Invoke(menu, property);
             }
-        }
 
-        public partial class SceneViewEvents
-        {
-            public class SceneGUIDelegateEvent : UnityEvent<SceneView> { }
-
-            public readonly SceneGUIDelegateEvent onSceneGUIDelegate = new SceneGUIDelegateEvent();
-
-            internal void InvokeSceneGUIDelegate(SceneView sceneview, SceneGUIDelegateEvent e)
+            internal void InvokeModifierKeysChanged(ModifierKeysChangedEvent e)
             {
                 if (e == null) { return; }
-                e.Invoke(sceneview);
+                e.Invoke();
+            }
+
+            internal void InvokeSearchChanged(SearchChangedEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke();
+            }
+
+            internal void InvokePlayModeStateChanged(PlayModeState playModeState, PlayModeStateEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(playModeState);
+            }
+        }
+
+        public partial class HierarchyViewEvents
+        {
+            public class HierarchyChangedEvent : UnityEvent { }
+
+            public class HierarchyWindowItemOnGUIEvent : UnityEvent<int, Rect> { }
+
+            public readonly HierarchyChangedEvent onHierarchyChanged = new HierarchyChangedEvent();
+            public readonly HierarchyWindowItemOnGUIEvent onHierarchyWindowItemOnGUI = new HierarchyWindowItemOnGUIEvent();
+
+            internal void InvokeHierarchyChanged(HierarchyChangedEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke();
+            }
+
+            internal void InvokeHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect, HierarchyWindowItemOnGUIEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(instanceID, selectionRect);
             }
         }
 
@@ -209,52 +230,56 @@ namespace QuickEditor.Monitor
             }
         }
 
-        public partial class HierarchyViewEvents
+        public partial class SceneViewEvents
         {
-            public class HierarchyChangedEvent : UnityEvent { }
+            public class SceneGUIDelegateEvent : UnityEvent<SceneView> { }
 
-            public class HierarchyWindowItemOnGUIEvent : UnityEvent<int, Rect> { }
+            public readonly SceneGUIDelegateEvent onSceneGUIDelegate = new SceneGUIDelegateEvent();
 
-            public readonly HierarchyChangedEvent onHierarchyChanged = new HierarchyChangedEvent();
-            public readonly HierarchyWindowItemOnGUIEvent onHierarchyWindowItemOnGUI = new HierarchyWindowItemOnGUIEvent();
-
-            internal void InvokeHierarchyChanged(HierarchyChangedEvent e)
+            internal void InvokeSceneGUIDelegate(SceneView sceneview, SceneGUIDelegateEvent e)
             {
                 if (e == null) { return; }
-                e.Invoke();
-            }
-
-            internal void InvokeHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect, HierarchyWindowItemOnGUIEvent e)
-            {
-                if (e == null) { return; }
-                e.Invoke(instanceID, selectionRect);
+                e.Invoke(sceneview);
             }
         }
 
-        //public enum PlayModeState
-        //{
-        //    EnteredEditMode,
-        //    ExitingEditMode,
-        //    EnteredPlayMode,
-        //    ExitingPlayMode,
-        //    Playing,
-        //    Paused,
-        //    UnPaused,
-        //    Quit,
-        //    PlayingOrWillChangePlaymode
-        //}
+        public enum PlayModeStateChange
+        {
+            //
+            // 摘要:
+            //     Occurs during the next update of the Editor application if it is in edit mode
+            //     and was previously in play mode.
+            EnteredEditMode = 0,
 
-        //public class PlayModeStateChangedEvent : UnityEvent<PlayModeState> { }
-        //public readonly PlayModeStateChangedEvent onPlayModeStateChanged = new PlayModeStateChangedEvent();
+            //
+            // 摘要:
+            //     Occurs when exiting edit mode, before the Editor is in play mode.
+            ExitingEditMode = 1,
 
-        //public readonly PlayModeStateChangedEvent onWillPlay = new PlayModeStateChangedEvent();
-        //public readonly PlayModeStateChangedEvent onBeginPlay = new PlayModeStateChangedEvent();
-        //public readonly PlayModeStateChangedEvent onWillStop = new PlayModeStateChangedEvent();
-        //internal void InvokePlayModeStateChanged(PlayModeState playModeState, PlayModeStateChangedEvent e)
-        //{
-        //    if (e == null) { return; }
-        //    e.Invoke(playModeState);
-        //}
+            //
+            // 摘要:
+            //     Occurs during the next update of the Editor application if it is in play mode
+            //     and was previously in edit mode.
+            EnteredPlayMode = 2,
+
+            //
+            // 摘要:
+            //     Occurs when exiting play mode, before the Editor is in edit mode.
+            ExitingPlayMode = 3,
+
+            EnteredPauseMode = 4,
+
+            ExitingPauseMode = 5,
+        }
+
+        public enum PlayModeState
+        {
+            None = -1,
+            Stopped,
+            Playing,
+            Paused,
+            PlayingOrWillChangePlayMode
+        }
 
         #endregion 事件相关定义
     }

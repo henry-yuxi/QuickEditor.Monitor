@@ -3,7 +3,7 @@
 namespace QuickEditor.Monitor
 {
     using UnityEditor;
-    using UnityEngine;
+    using Debug = LoggerUtils;
 
     [InitializeOnLoad]
     internal sealed partial class ProjectBuildTargetWatcher
@@ -13,7 +13,7 @@ namespace QuickEditor.Monitor
             QuickUnityEditorEventsWatcher watcher = QuickUnityEditorEventsWatcher.Observe();
             watcher.BuildTarget.onActiveBuildTargetChanged.AddListener(target =>
             {
-                Debug.Log(string.Format(Utils.FORMAT, Utils.Assembly, "Switch Platform Successed, Current Platform : " + target));
+                Debug.Log("Switch Platform Successed, Current Platform : {0}", target);
             });
         }
     }

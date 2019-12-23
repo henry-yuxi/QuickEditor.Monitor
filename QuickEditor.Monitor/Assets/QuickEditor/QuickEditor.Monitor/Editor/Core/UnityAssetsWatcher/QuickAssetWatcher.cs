@@ -136,9 +136,6 @@ namespace QuickEditor.Monitor
             allWatchers.Remove(this);
         }
 
-        /// <summary>
-        /// Disable the specified watcher.
-        /// </summary>
         private static void RemoveWatcher(QuickAssetWatcher watcher)
         {
             allWatchers.Remove(watcher);

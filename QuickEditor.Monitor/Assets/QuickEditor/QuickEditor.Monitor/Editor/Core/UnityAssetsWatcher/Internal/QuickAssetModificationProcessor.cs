@@ -7,7 +7,7 @@ namespace QuickEditor.Monitor
     using UnityEditor;
     using UnityEngine;
     using UnityEngine.SceneManagement;
-
+    using Debug = LoggerUtils;
     internal sealed partial class QuickAssetModificationProcessor : UnityEditor.AssetModificationProcessor
     {
         public static void OnWillCreateAsset(string path)
@@ -27,7 +27,7 @@ namespace QuickEditor.Monitor
                 if (path.EndsWith(".unity"))
                 {
                     Scene scene = SceneManager.GetSceneByPath(path);
-                    Debug.Log("当前保存的场景名称是 ：" + scene.name);
+                    Debug.Log("Currernt Save Scene ：" + scene.name);
                 }
             }
             return result.ToArray();

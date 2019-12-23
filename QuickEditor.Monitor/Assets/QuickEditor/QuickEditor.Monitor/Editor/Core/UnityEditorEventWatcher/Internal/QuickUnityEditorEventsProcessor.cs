@@ -13,14 +13,10 @@ namespace QuickEditor.Monitor
         static QuickUnityEditorEventsProcessor()
         {
             EditorApplicationEventsProcessor.Process();
-            EditorPlayModeEventsProcessor.Process();
-            SceneViewEventsProcessor.Process();
+            HierarchyViewEventsProcessor.Process();
             PrefabUtilityEventsProcessor.Process();
             ProjectViewEventsProcessor.Process();
-            HierarchyViewEventsProcessor.Process();
-
-            //EditorUserBuildSettings.activeBuildTargetChanged -= OnActiveBuildTargetChanged;
-            //EditorUserBuildSettings.activeBuildTargetChanged += OnActiveBuildTargetChanged;
+            SceneViewEventsProcessor.Process();
 
             //if (IsInited && mOnLockingAssembly != null)
             //{
@@ -30,28 +26,21 @@ namespace QuickEditor.Monitor
             //}
         }
 
-        internal interface IEventProcessor
-        {
-        }
+        #region EditorApplication Events Processor
 
         internal sealed partial class EditorApplicationEventsProcessor
         {
+            private static QuickUnityEditorEventsWatcher.PlayModeState mCurState = QuickUnityEditorEventsWatcher.PlayModeState.Stopped;
+            private static bool mIgnore = false;
+
             public static void Process()
             {
-                EditorApplication.contextualPropertyMenu -= onContextualPropertyMenu;
-                EditorApplication.contextualPropertyMenu += onContextualPropertyMenu;
-
-                EditorApplication.modifierKeysChanged -= onModifierKeysChanged;
-                EditorApplication.modifierKeysChanged += onModifierKeysChanged;
-
+#if UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_2018 || UNITY_2019
                 EditorApplication.delayCall -= onDelayCall;
                 EditorApplication.delayCall += onDelayCall;
-
+#endif
                 EditorApplication.update -= onUpdate;
                 EditorApplication.update += onUpdate;
-
-                EditorApplication.searchChanged -= onSearchChanged;
-                EditorApplication.searchChanged += onSearchChanged;
 
                 // globalEventHandler
                 EditorApplication.CallbackFunction function = () => onGlobalEventHandler(Event.current);
@@ -60,40 +49,118 @@ namespace QuickEditor.Monitor
                 functions += function;
                 info.SetValue(null, (object)functions);
 
-                //EditorApplication.wantsToQuit -= onQuit;
-                //EditorApplication.wantsToQuit += onQuit;
+                EditorApplication.contextualPropertyMenu -= onContextualPropertyMenu;
+                EditorApplication.contextualPropertyMenu += onContextualPropertyMenu;
+
+                EditorApplication.modifierKeysChanged -= onModifierKeysChanged;
+                EditorApplication.modifierKeysChanged += onModifierKeysChanged;
+
+                EditorApplication.searchChanged -= onSearchChanged;
+                EditorApplication.searchChanged += onSearchChanged;
+
+#if UNITY_2017_2_OR_NEWER
+                EditorApplication.playModeStateChanged -= onPlayModeStateChanged;
+                EditorApplication.playModeStateChanged += onPlayModeStateChanged;
+#else
+                EditorApplication.playmodeStateChanged -= onPlayModeStateChanged;
+                EditorApplication.playmodeStateChanged += onPlayModeStateChanged;
+#endif
             }
 
-            private static void onGlobalEventHandler(Event current)
+            private static void onPlayModeStateChanged()
             {
+                var changedState = QuickUnityEditorEventsWatcher.PlayModeState.None;
+                switch (mCurState)
+                {
+                    case QuickUnityEditorEventsWatcher.PlayModeState.Stopped:
+                        if (EditorApplication.isPlayingOrWillChangePlaymode)
+                        {
+                            if (EditorApplication.isPlaying)
+                            {
+                                changedState = QuickUnityEditorEventsWatcher.PlayModeState.Playing;
+                            }
+                            else
+                            {
+                                mIgnore = true;
+                            }
+                        }
+
+                        break;
+
+                    case QuickUnityEditorEventsWatcher.PlayModeState.Playing:
+                        if (EditorApplication.isPaused)
+                        {
+                            changedState = QuickUnityEditorEventsWatcher.PlayModeState.Paused;
+                        }
+                        else
+                        {
+                            changedState = QuickUnityEditorEventsWatcher.PlayModeState.Stopped;
+                        }
+                        break;
+
+                    case QuickUnityEditorEventsWatcher.PlayModeState.Paused:
+                        if (EditorApplication.isPlayingOrWillChangePlaymode)
+                        {
+                            changedState = QuickUnityEditorEventsWatcher.PlayModeState.Playing;
+                        }
+                        else
+                        {
+                            changedState = QuickUnityEditorEventsWatcher.PlayModeState.Stopped;
+                        }
+                        break;
+                }
+                if (mIgnore || changedState == QuickUnityEditorEventsWatcher.PlayModeState.None) { return; }
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeGlobalEvent(current, w.EditorApplication.onGlobal);
+                    if (w == null) { continue; }
+                    w.EditorApplication.InvokePlayModeStateChanged(changedState, w.EditorApplication.onPlayModeStateChanged);
                 }
+                mCurState = changedState;
+                mIgnore = false;
             }
 
-            private static bool onQuit()
+            private static void onPlayModeStateChanged(PlayModeStateChange playMode)
             {
-                return false;
-            }
+                var changedState = QuickUnityEditorEventsWatcher.PlayModeState.None;
+                switch (playMode)
+                {
+                    case PlayModeStateChange.EnteredEditMode:
+                        changedState = QuickUnityEditorEventsWatcher.PlayModeState.Stopped;
+                        break;
 
-            private static void onContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
-            {
+                    case PlayModeStateChange.ExitingEditMode:
+                        break;
+
+                    case PlayModeStateChange.EnteredPlayMode:
+                        changedState = QuickUnityEditorEventsWatcher.PlayModeState.Playing;
+                        break;
+
+                    case PlayModeStateChange.ExitingPlayMode:
+                        break;
+
+                    default:
+                        break;
+                }
+                //switch (mCurState)
+                //{
+                //    case QuickUnityEditorEventsWatcher.PlayModeState.Playing:
+                //        if (EditorApplication.isPaused)
+                //        {
+                //            changedState = QuickUnityEditorEventsWatcher.PlayModeState.Paused;
+                //        }
+                //        else
+                //        {
+                //            changedState = QuickUnityEditorEventsWatcher.PlayModeState.Stopped;
+                //        }
+                //        break;
+                //}
+                if (mIgnore || changedState == QuickUnityEditorEventsWatcher.PlayModeState.None) { return; }
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeContextualPropertyMenu(menu, property, w.EditorApplication.onContextualPropertyMenu);
+                    if (w == null) { continue; }
+                    w.EditorApplication.InvokePlayModeStateChanged(changedState, w.EditorApplication.onPlayModeStateChanged);
                 }
-            }
-
-            private static void onModifierKeysChanged()
-            {
-                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
-                {
-                    if (w == null || w.EditorApplication == null) { continue; }
-                    w.EditorApplication.InvokeModifierKeysChanged(w.EditorApplication.onModifierKeysChanged);
-                }
+                mCurState = changedState;
             }
 
             private static void onDelayCall()
@@ -114,6 +181,33 @@ namespace QuickEditor.Monitor
                 }
             }
 
+            private static void onGlobalEventHandler(Event current)
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeGlobalEvent(current, w.EditorApplication.onGlobal);
+                }
+            }
+
+            private static void onContextualPropertyMenu(GenericMenu menu, SerializedProperty property)
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeContextualPropertyMenu(menu, property, w.EditorApplication.onContextualPropertyMenu);
+                }
+            }
+
+            private static void onModifierKeysChanged()
+            {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.EditorApplication == null) { continue; }
+                    w.EditorApplication.InvokeModifierKeysChanged(w.EditorApplication.onModifierKeysChanged);
+                }
+            }
+
             private static void onSearchChanged()
             {
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
@@ -124,48 +218,9 @@ namespace QuickEditor.Monitor
             }
         }
 
-        internal sealed partial class EditorPlayModeEventsProcessor
-        {
-            public static void Process()
-            {
-#if UNITY_2018_2_OR_NEWER
-                //                EditorApplication.playModeStateChanged -= onPlayModeStateChanged;
-                //EditorApplication.playModeStateChanged += onPlayModeStateChanged;
-#else
-                EditorApplication.playmodeStateChanged -= onPlayModeStateChanged;
-                EditorApplication.playmodeStateChanged += onPlayModeStateChanged;
-#endif
-            }
+        #endregion EditorApplication Events Processor
 
-            private static void onPlayModeStateChanged()
-            {
-            }
-
-            //private static void onPlayModeStateChanged(PlayModeStateChange playMode)
-            //{
-            //    foreach (QuickUnityEditorEventWatcher w in QuickUnityEditorEventWatcher.allWatchers)
-            //    {
-            //        if (w == null) { continue; }
-            //        w.InvokePlayModeStateChanged(QuickUnityEditorEventWatcher.PlayModeState.Playing, w.onPlayModeStateChanged);
-            //    }
-
-            //    if (EditorApplication.isPlayingOrWillChangePlaymode)
-            //    {
-            //        if (!EditorApplication.isPlaying)
-            //        {
-            //        }
-            //        else
-            //        {
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (EditorApplication.isPlaying)
-            //        {
-            //        }
-            //    }
-            //}
-        }
+        #region HierarchyView Events Processor
 
         internal sealed partial class HierarchyViewEventsProcessor
         {
@@ -198,6 +253,10 @@ namespace QuickEditor.Monitor
             }
         }
 
+        #endregion HierarchyView Events Processor
+
+        #region PrefabUtility Events Processor
+
         internal sealed partial class PrefabUtilityEventsProcessor
         {
             public static void Process()
@@ -215,6 +274,10 @@ namespace QuickEditor.Monitor
                 }
             }
         }
+
+        #endregion PrefabUtility Events Processor
+
+        #region ProjectView Events Processor
 
         internal sealed partial class ProjectViewEventsProcessor
         {
@@ -248,6 +311,10 @@ namespace QuickEditor.Monitor
             }
         }
 
+        #endregion ProjectView Events Processor
+
+        #region SceneView Events Processor
+
         internal sealed partial class SceneViewEventsProcessor
         {
             public static void Process()
@@ -271,11 +338,13 @@ namespace QuickEditor.Monitor
             }
         }
 
-        #region BuildTarget Processor
+        #endregion SceneView Events Processor
 
-#if UNITY_2018_2_OR_NEWER
+        #region BuildTarget Events Processor
 
-        internal sealed partial class BuildTargetChangedProcessor : UnityEditor.Build.IActiveBuildTargetChanged
+#if UNITY_2017_1_OR_NEWER
+
+        internal sealed partial class BuildTargetEventsProcessor : UnityEditor.Build.IActiveBuildTargetChanged
         {
             public int callbackOrder
             {
@@ -284,11 +353,11 @@ namespace QuickEditor.Monitor
 
             public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
             {
-                BuildTargetChangedExtension.Process(newTarget);
+                BuildTargetExtension.Process(newTarget);
             }
         }
 
-        internal sealed partial class BuildTargetChangedExtension
+        internal sealed partial class BuildTargetExtension
         {
             public static void Process(BuildTarget activeBuildTarget)
             {
@@ -302,28 +371,40 @@ namespace QuickEditor.Monitor
 
 #endif
 
-        #endregion BuildTarget Processor
+        #endregion BuildTarget Events Processor
 
-        #region Unity Build Pipeline
+        #region Build Pipeline Events Processor
 
-#if UNITY_2018_2_OR_NEWER
+#if UNITY_2018_1_OR_NEWER
 
-        internal sealed partial class ProcessSceneProcessor : UnityEditor.Build.IProcessSceneWithReport
+        internal sealed partial class BuildPipelineEventsProcessor : UnityEditor.Build.IProcessSceneWithReport, UnityEditor.Build.IPreprocessBuildWithReport, UnityEditor.Build.IPostprocessBuildWithReport
         {
             public int callbackOrder
             {
                 get { return 0; }
             }
 
-            public void OnProcessScene(Scene scene, UnityEditor.Build.Reporting.BuildReport report)
+            void UnityEditor.Build.IProcessSceneWithReport.OnProcessScene(Scene scene, UnityEditor.Build.Reporting.BuildReport report)
             {
                 BuildPipelineExtension.ProcessScene(scene);
+            }
+
+            void UnityEditor.Build.IPreprocessBuildWithReport.OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
+            {
+                if (report == null) { return; }
+                BuildPipelineExtension.PreprocessBuild(report.summary.platform, report.summary.outputPath);
+            }
+
+            void UnityEditor.Build.IPostprocessBuildWithReport.OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
+            {
+                if (report == null) { return; }
+                BuildPipelineExtension.PostprocessBuild(report.summary.platform, report.summary.outputPath);
             }
         }
 
 #elif UNITY_5_6 || UNITY_2017
 
-        internal sealed partial class ProcessSceneProcessor : UnityEditor.Build.IProcessScene
+        internal sealed partial class BuildPipelineEventsProcessor : UnityEditor.Build.IProcessScene, UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPostprocessBuild
         {
             int UnityEditor.Build.IOrderedCallback.callbackOrder
             {
@@ -334,88 +415,10 @@ namespace QuickEditor.Monitor
             {
                 BuildPipelineExtension.ProcessScene(scene);
             }
-        }
-
-#else
-
- internal sealed partial class ProcessSceneProcessor
-{
-    [UnityEditor.Callbacks.ProcessScene(1)]
-    private static void OnProcessScene(Scene scene)
-    {
-        BuildPipelineExtension.ProcessScene(scene);
-    }
-}
-
-#endif
-
-#if UNITY_2018_2_OR_NEWER
-
-        internal sealed partial class PreprocessBuildProcessor : UnityEditor.Build.IPreprocessBuildWithReport
-        {
-            public int callbackOrder
-            {
-                get { return 0; }
-            }
-
-            public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
-            {
-                if (report == null) { return; }
-                BuildPipelineExtension.PreprocessBuild(report.summary.platform, report.summary.outputPath);
-            }
-        }
-
-#elif UNITY_5_6 || UNITY_2017
-
-        internal sealed partial class PreprocessBuildProcessor : UnityEditor.Build.IPreprocessBuild
-        {
-            int UnityEditor.Build.IOrderedCallback.callbackOrder
-            {
-                get { return 0; }
-            }
 
             void UnityEditor.Build.IPreprocessBuild.OnPreprocessBuild(BuildTarget target, string pathToBuiltProject)
             {
                 BuildPipelineExtension.PreprocessBuild(target, pathToBuiltProject);
-            }
-        }
-
-#else
-
- internal sealed partial  class PreprocessBuildProcessor
-{
-    [UnityEditor.Callbacks.PreProcessBuild(1)]
-    private static void OnPreprocessBuild(BuildTarget target, string pathToBuiltProject)
-    {
-        BuildPipelineExtension.PreprocessBuild(target, path);
-    }
-}
-
-#endif
-
-#if UNITY_2018_2_OR_NEWER
-
-        internal sealed partial class PostprocessBuildProcessor : UnityEditor.Build.IPostprocessBuildWithReport
-        {
-            public int callbackOrder
-            {
-                get { return 0; }
-            }
-
-            public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
-            {
-                if (report == null) { return; }
-                BuildPipelineExtension.PostprocessBuild(report.summary.platform, report.summary.outputPath);
-            }
-        }
-
-#elif UNITY_5_6 || UNITY_2017
-
-        internal sealed partial class PostprocessBuildProcessor : UnityEditor.Build.IPostprocessBuild
-        {
-            int UnityEditor.Build.IOrderedCallback.callbackOrder
-            {
-                get { return 0; }
             }
 
             void UnityEditor.Build.IPostprocessBuild.OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
@@ -426,14 +429,26 @@ namespace QuickEditor.Monitor
 
 #else
 
- internal sealed partial class PostprocessBuildProcessor
-{
-    [UnityEditor.Callbacks.PostProcessBuild(1)]
-    private static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
-    {
-        BuildPipelineExtension.PreprocessBuild(target, pathToBuiltProject);
-    }
-}
+        internal sealed partial class BuildPipelineEventsProcessor
+        {
+            [UnityEditor.Callbacks.ProcessScene(0)]
+            private static void OnProcessScene(Scene scene)
+            {
+                BuildPipelineExtension.ProcessScene(scene);
+            }
+
+            [UnityEditor.Callbacks.PreProcessBuild(0)]
+            private static void OnPreprocessBuild(BuildTarget target, string pathToBuiltProject)
+            {
+                BuildPipelineExtension.PreprocessBuild(target, pathToBuiltProject);
+            }
+
+            [UnityEditor.Callbacks.PostProcessBuild(0)]
+            private static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
+            {
+                BuildPipelineExtension.PreprocessBuild(target, pathToBuiltProject);
+            }
+        }
 
 #endif
 
@@ -467,7 +482,7 @@ namespace QuickEditor.Monitor
             }
         }
 
-        #endregion Unity Build Pipeline
+        #endregion Build Pipeline Events Processor
     }
 }
 
