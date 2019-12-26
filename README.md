@@ -1,6 +1,15 @@
 # QuickEditor.Monitor
 
-## Getting Started
+## Overview
+
+QuickEditor.Monitor是对Unity的编辑器事件、资源导入回调做了二次封装, 使用者不需要关注Unity版本API的修改、删减. 
+
+### Runtime Environment (运行环境)
+
+Version : Unity 4.x ~ 2020.x
+
+## How to use?
+
 Take a look at the sample project provided here for an example.
 
 ### UnityAssetsWatcher example
@@ -62,3 +71,30 @@ If you already installed. Open the Package Manager UI, you will see the git icon
 
 请确保使用的UPM包是最终版本。
       
+### Package URL's
+<table>
+  <tbody>
+    <tr style="text-align: center; font-weight:bold">
+      <td width="200" style="border-width: 1px; background: rgb(248, 248, 248); padding: 6px 13px; ">
+        <b>Version</b>
+      </td>
+      <td width="500" style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left: none; background: rgb(248, 248, 248); padding: 6px 13px;">
+        <b>Link</b>
+      </td>
+    </tr>
+    <tr class="firstRow">
+      <td width="200" style="border-width: 1px; background: rgb(248, 248, 248); padding: 6px 13px;">
+        0.1.4
+      </td>
+      <td width="500" style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left: none; background: rgb(248, 248, 248); padding: 6px 13px;">
+        https://github.com/henry-yuxi/QuickEditor.Monitor.git#0.1.4
+      </td>
+    </tr>      
+  </tbody>
+</table>      
+
+## See Also
+
+GitHub Page : https://github.com/henry-yuxi/QuickEditor.Monitor/
+
+Issue tracker : https://github.com/henry-yuxi/QuickEditor.Monitor/issues
