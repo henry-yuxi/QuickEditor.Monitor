@@ -468,12 +468,34 @@ namespace QuickEditor.Monitor
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
+                    w.QuickSDKBuildPipeline.InvokePreApply(target, path, w.QuickSDKBuildPipeline.OnPreApply);
+                }
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.BuildPipeline == null) { continue; }
+                    w.QuickSDKBuildPipeline.InvokeApplySDK(target, path, w.QuickSDKBuildPipeline.OnApplySDK);
+                }
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.BuildPipeline == null) { continue; }
+                    w.QuickSDKBuildPipeline.InvokePreBuild(target, path, w.QuickSDKBuildPipeline.OnPreBuild);
+                }
+
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.BuildPipeline == null) { continue; }
                     w.BuildPipeline.InvokePreprocessBuild(target, path, w.BuildPipeline.OnPreprocessBuild);
                 }
             }
 
             public static void PostprocessBuild(BuildTarget target, string path)
             {
+                foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
+                {
+                    if (w == null || w.BuildPipeline == null) { continue; }
+                    w.QuickSDKBuildPipeline.InvokePostBuild(target, path, w.QuickSDKBuildPipeline.OnPostBuild);
+                }
+
                 foreach (QuickUnityEditorEventsWatcher w in QuickUnityEditorEventsWatcher.allWatchers)
                 {
                     if (w == null || w.BuildPipeline == null) { continue; }
