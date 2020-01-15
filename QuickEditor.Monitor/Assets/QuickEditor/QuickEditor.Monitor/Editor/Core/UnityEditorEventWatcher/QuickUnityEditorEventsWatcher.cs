@@ -45,6 +45,7 @@ namespace QuickEditor.Monitor
             allWatchers.Remove(watcher);
         }
 
+        public readonly QuickSDKBuildPipelineEvents QuickSDKBuildPipeline = new QuickSDKBuildPipelineEvents();
         public readonly BuildPipelineEvents BuildPipeline = new BuildPipelineEvents();
         public readonly BuildTargetEvents BuildTarget = new BuildTargetEvents();
         public readonly EditorApplicationEvents EditorApplication = new EditorApplicationEvents();
@@ -56,6 +57,55 @@ namespace QuickEditor.Monitor
         #endregion API
 
         #region 事件相关定义
+
+        public partial class QuickSDKBuildPipelineEvents
+        {
+            public class QuickSDKBuildBuildEvent : UnityEvent<BuildTarget, string> { }
+
+            public readonly QuickSDKBuildBuildEvent OnPreApply = new QuickSDKBuildBuildEvent();
+            public readonly QuickSDKBuildBuildEvent OnApplySDK = new QuickSDKBuildBuildEvent();
+            public readonly QuickSDKBuildBuildEvent OnPreBuild = new QuickSDKBuildBuildEvent();
+
+            //public readonly QuickSDKBuildBuildEvent OnBuildPlayer = new QuickSDKBuildBuildEvent();
+            //public readonly QuickSDKBuildBuildEvent OnPreFinalPack = new QuickSDKBuildBuildEvent();
+            public readonly QuickSDKBuildBuildEvent OnPostBuild = new QuickSDKBuildBuildEvent();
+
+            internal void InvokePreApply(BuildTarget target, string path, QuickSDKBuildBuildEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(target, path);
+            }
+
+            internal void InvokeApplySDK(BuildTarget target, string path, QuickSDKBuildBuildEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(target, path);
+            }
+
+            internal void InvokePreBuild(BuildTarget target, string path, QuickSDKBuildBuildEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(target, path);
+            }
+
+            internal void InvokeBuildPlayer(BuildTarget target, string path, QuickSDKBuildBuildEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(target, path);
+            }
+
+            internal void InvokePreFinalPack(BuildTarget target, string path, QuickSDKBuildBuildEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(target, path);
+            }
+
+            internal void InvokePostBuild(BuildTarget target, string path, QuickSDKBuildBuildEvent e)
+            {
+                if (e == null) { return; }
+                e.Invoke(target, path);
+            }
+        }
 
         public partial class BuildPipelineEvents
         {
