@@ -1,4 +1,4 @@
-# QuickEditor.Monitor
+# Quick Editor Events Monitor for Unity
 
 ## Overview
 
